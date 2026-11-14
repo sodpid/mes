@@ -1,0 +1,6 @@
+{
+  "description": "Factory work centers without seed data",
+  "statements": [
+    "CREATE TABLE work_centers (id CHAR(36) CHARACTER SET ascii COLLATE ascii_bin PRIMARY KEY,company_id CHAR(36) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,factory_id CHAR(36) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,code VARCHAR(64) COLLATE utf8mb4_0900_bin NOT NULL,name VARCHAR(200) COLLATE utf8mb4_0900_ai_ci NOT NULL,remark VARCHAR(2000),status VARCHAR(32) NOT NULL DEFAULT 'DRAFT' CHECK(status IN ('DRAFT','ACTIVE','INACTIVE')),revision INT NOT NULL DEFAULT 1 CHECK(revision>0),created_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),created_by CHAR(36) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,updated_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),updated_by CHAR(36) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,UNIQUE(factory_id,code),UNIQUE(id,company_id,factory_id),FOREIGN KEY(factory_id,company_id) REFERENCES factories(id,company_id),FOREIGN KEY(created_by) REFERENCES users(id),FOREIGN KEY(updated_by) REFERENCES users(id),INDEX(company_id,factory_id,status)) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_bin"
+  ]
+}

@@ -1,0 +1,22 @@
+name: mes-mysql-local
+services:
+  mysql:
+    image: mysql:8.4
+    stop_grace_period: 60s
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?请先运行npm run env:init}
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: mes_local_bigint
+      MYSQL_USER: mes_app
+      MYSQL_PASSWORD: ${MYSQL_APP_PASSWORD:?请先运行npm run env:init}
+    command: ["--default-time-zone=+00:00"]
+    ports:
+      - "127.0.0.1:13379:3306"
+    volumes:
+      - mes_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost --silent"]
+      interval: 3s
+      retries: 40
+volumes:
+  mes_mysql_data:

@@ -1,0 +1,27 @@
+name: mes-prod
+services:
+  app:
+    image: ${MES_IMAGE:?指定已核验MES镜像}
+    env_file: /opt/mes/shared/app.env
+    ports:
+      - 127.0.0.1:18082:3001
+    restart: unless-stopped
+    init: true
+    mem_limit: 256m
+    cpus: 0.75
+    pids_limit: 128
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,noexec,nosuid
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: '3'
+    networks: [database]
+networks:
+  database:
+    external: true
+    name: mes-prod-database
